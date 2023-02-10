@@ -1,11 +1,17 @@
 apiVersion: v1 
 kind: Pod 
 metadata: 
- name: busybox-logs 
+  name: mysql 
+  labels: 
+    name: mysql 
+    app: demo 
 spec: 
   containers: 
-  - name: busybox 
-    image: busybox 
-    command: ["/bin/sh"] 
-    args: ["-c", "echo \"$(date) - INFO - My first logs output on $(hostname)\""] 
-#   restartPolicy: Never
+  - name: mysql 
+    image: mysql:latest 
+    ports: 
+    - containerPort: 3306 
+      protocol: TCP 
+    env: 
+    - name: "MYSQL_ROOT_PASSWORD" 
+      value: "password"
