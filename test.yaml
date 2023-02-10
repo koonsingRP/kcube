@@ -1,0 +1,11 @@
+apiVersion: v1 
+kind: Pod 
+metadata: 
+ name: busybox-logs 
+spec: 
+  containers: 
+  - name: busybox 
+    image: busybox 
+    command: ["/bin/sh"] 
+    args: ["-c", "echo \"$(date) - INFO - My first logs output on $(hostname)\""] 
+#   restartPolicy: Never
