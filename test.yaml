@@ -15,3 +15,27 @@ spec:
     env: 
     - name: "MYSQL_ROOT_PASSWORD" 
       value: "password"
+
+
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: tomcat-deployment
+spec:
+  selector:
+    matchLabels:
+      app: tomcat
+   replicas: 2
+     template:
+       metadata:
+         labels:
+           app: tomcat
+       spec:
+         containers:
+         - name: tomcat
+           image: tomcat:9.0
+           ports:
+           - containerPort: 8080
