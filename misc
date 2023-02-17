@@ -8,7 +8,7 @@ kubectl create -f deployment.yaml
 kubectl expose deployment apache-deployment --type=NodePort
 minikube service apache-deployment --url
 
-
+ minikube image build -t koonsingrp/22050108_webimage:latest .
 
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
