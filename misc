@@ -1,0 +1,16 @@
+minikube start --extra-config=apiserver.service-node-port-range=1-43000
+
+
+kubectl expose deployment apache-deployment --type=NodePort --target-port=80 --nodePort=4200
+minikube service apache-deployment --url
+
+
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+default         _gateway        0.0.0.0         UG        0 0          0 ens160
+link-local      0.0.0.0         255.255.0.0     U         0 0          0 ens160
+172.17.0.0      0.0.0.0         255.255.0.0     U         0 0          0 docker0
+172.19.0.0      0.0.0.0         255.255.0.0     U         0 0          0 br-f8feca5755f7
+172.20.115.0    0.0.0.0         255.255.255.0   U         0 0          0 ens160
+192.168.49.0    0.0.0.0         255.255.255.0   U         0 0          0 br-24e6db123383
+
