@@ -1,0 +1,144 @@
+aborted console log
+Started by an SCM change
+Obtained 22050108_Jenkinsfile from git https://github.com/koonsingRP/DV1C03_Repo.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/22050108_Pipeline_Kube
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/22050108_Pipeline_Kube/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/koonsingRP/DV1C03_Repo.git # timeout=10
+Fetching upstream changes from https://github.com/koonsingRP/DV1C03_Repo.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.17.1'
+ > git fetch --tags --progress -- https://github.com/koonsingRP/DV1C03_Repo.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 31f423b909cfe83bd52e7bd4d36ab7cb4b4951bf (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 31f423b909cfe83bd52e7bd4d36ab7cb4b4951bf # timeout=10
+Commit message: "Update deployment.yaml"
+ > git rev-list --no-walk 7a7ee6c93ca813a0c013d46584db9d2feed8495e # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Stage 1_22050108)
+[Pipeline] echo
+S1_22050108 : Environment Preparation Completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 2_22050108)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker build -t koonsingrp/22050108_webimage .
+Sending build context to Docker daemon    576kB
+
+Step 1/6 : From ubuntu:18.04
+ ---> 5a214d77f5d7
+Step 2/6 : RUN apt update
+ ---> Using cache
+ ---> fc4a51a30134
+Step 3/6 : RUN apt-get install -y apache2
+ ---> Using cache
+ ---> c36b10a13efe
+Step 4/6 : RUN apt clean
+ ---> Using cache
+ ---> e9f0d24d8e88
+Step 5/6 : EXPOSE 80
+ ---> Using cache
+ ---> ec0f7388724d
+Step 6/6 : CMD ["apache2ctl","-D","FOREGROUND"]
+ ---> Using cache
+ ---> f2195ca0b898
+Successfully built f2195ca0b898
+Successfully tagged koonsingrp/22050108_webimage:latest
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] sh
++ docker-compose up -d
+Creating network "22050108_pipeline_kube_default" with the default driver
+Creating S2_22050108_Server ... 
+Creating S2_22050108_Server ... done
+[Pipeline] echo
+S2_22050108 : Web Server Creation Completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage Parallel)
+[Pipeline] parallel
+[Pipeline] { (Branch: Stage 3_22050108)
+[Pipeline] { (Branch: Stage 4_22050108)
+[Pipeline] stage
+[Pipeline] { (Stage 3_22050108)
+[Pipeline] stage
+[Pipeline] { (Stage 4_22050108)
+[Pipeline] echo
+S3_22050108 : API Test Completed
+[Pipeline] }
+[Pipeline] echo
+S4_22050108 : DAST Security Test Completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 5_22050108)
+[Pipeline] input
+Do you want to release the work?
+Yes or Abort
+Resuming build at Fri Feb 17 09:21:31 SGT 2023 after Jenkins restart
+Ready to run at Fri Feb 17 09:21:31 SGT 2023
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 6_22050108)
+Stage "Stage 6_22050108" skipped due to earlier failure(s)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 7_22050108)
+Stage "Stage 7_22050108" skipped due to earlier failure(s)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker-compose down
+Removing S2_22050108_Server ... 
+Removing S2_22050108_Server ... done
+Removing network 22050108_pipeline_kube_default
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Rejected by jadmin
+Finished: ABORTED
