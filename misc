@@ -4,6 +4,11 @@ minikube start --extra-config=apiserver.service-node-port-range=1-43000
 kubectl expose deployment apache-deployment --type=NodePort --target-port=80 --nodePort=4200
 minikube service apache-deployment --url
 
+kubectl create -f deployment.yaml
+kubectl expose deployment apache-deployment --type=NodePort
+minikube service apache-deployment --url
+
+
 
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
