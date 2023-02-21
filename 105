@@ -1,0 +1,220 @@
+Started by an SCM change
+Obtained 22050108_Jenkinsfile from git https://github.com/koonsingRP/DV1C03_Repo.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/22050108_Pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/22050108_Pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/koonsingRP/DV1C03_Repo.git # timeout=10
+Fetching upstream changes from https://github.com/koonsingRP/DV1C03_Repo.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.17.1'
+ > git fetch --tags --progress -- https://github.com/koonsingRP/DV1C03_Repo.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 1930a14c16675d1156267ae3030e629b03e76028 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 1930a14c16675d1156267ae3030e629b03e76028 # timeout=10
+Commit message: "Update 22050108_Jenkinsfile"
+ > git rev-list --no-walk a42359cb3b38ea0ac35dc56bf7e356c114f14825 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Stage 1_22050108)
+[Pipeline] echo
+S1_22050108 : Environment Preparation Completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 2_22050108)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker build -t koonsingrp/22050108_webimage .
+Sending build context to Docker daemon  344.6kB
+
+Step 1/6 : From ubuntu:18.04
+ ---> 5a214d77f5d7
+Step 2/6 : RUN apt update
+ ---> Using cache
+ ---> 6fc9dae13f71
+Step 3/6 : RUN apt-get install -y apache2
+ ---> Using cache
+ ---> 98db8ccbd0d6
+Step 4/6 : RUN apt clean
+ ---> Using cache
+ ---> 7d7c70920b34
+Step 5/6 : EXPOSE 80
+ ---> Using cache
+ ---> 5cb1d66c748a
+Step 6/6 : CMD ["apache2ctl","-D","FOREGROUND"]
+ ---> Using cache
+ ---> cada10276d36
+Successfully built cada10276d36
+Successfully tagged koonsingrp/22050108_webimage:latest
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] sh
++ docker-compose up -d
+Creating network "22050108_pipeline_default" with the default driver
+Creating S2_22050108_Server ... 
+Creating S2_22050108_Server ... done
+[Pipeline] echo
+S2_22050108 : Web Server Creation Completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage Parallel)
+[Pipeline] parallel
+[Pipeline] { (Branch: Stage 3_22050108)
+[Pipeline] { (Branch: Stage 4_22050108)
+[Pipeline] stage
+[Pipeline] { (Stage 3_22050108)
+[Pipeline] stage
+[Pipeline] { (Stage 4_22050108)
+[Pipeline] echo
+S3_22050108 : API Test Completed
+[Pipeline] }
+[Pipeline] echo
+S4_22050108 : DAST Security Test Completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] }
+[Pipeline] // parallel
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 5_22050108)
+[Pipeline] input
+Do you want to release the work?
+Yes or Abort
+Approved by jadmin
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+Yes Selected
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withDockerRegistry
+$ docker login -u koonsingrp -p ******** https://registry.hub.docker.com
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/workspace/22050108_Pipeline@tmp/9788b12f-ee6c-411c-926e-5ae8becb97c7/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker tag koonsingrp/22050108_webimage registry.hub.docker.com/koonsingrp/22050108_webimage:latest
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker push registry.hub.docker.com/koonsingrp/22050108_webimage:latest
+The push refers to repository [registry.hub.docker.com/koonsingrp/22050108_webimage]
+f9c448dc71e6: Preparing
+aa8a5acec17b: Preparing
+05034f68da9a: Preparing
+824bf068fd3d: Preparing
+f9c448dc71e6: Layer already exists
+05034f68da9a: Layer already exists
+824bf068fd3d: Layer already exists
+aa8a5acec17b: Layer already exists
+latest: digest: sha256:f360cf2a41da66ade472c49516c8bdc2850b12c21d3c2663437d1d9f9a9861bb size: 1160
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] echo
+Work Released - 22050108
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 6_22050108)
+[Pipeline] sh
++ docker-compose down
+Stopping S2_22050108_Server ... 
+Stopping S2_22050108_Server ... done
+Removing S2_22050108_Server ... 
+Removing S2_22050108_Server ... done
+Removing network 22050108_pipeline_default
+[Pipeline] echo
+Stage 6 - 22050108 - Stop docker container
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Stage 7_22050108)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] wrap
+[Pipeline] {
+[Pipeline] sh
++ kubectl delete -n default deployment 22050108-svr
+deployment.apps "22050108-svr" deleted
+[Pipeline] sh
++ kubectl delete -n default service apache
+service "apache" deleted
+[Pipeline] sh
++ kubectl create -f deployment.yaml
+deployment.apps/22050108-svr created
+service/apache created
+[Pipeline] echo
+Down previous deployment and continue with new deployment . . .
+[Pipeline] }
+[Pipeline] // wrap
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] echo
+Stage 7 - 22050108 Creating deployment to kubernetes
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ docker-compose down
+Removing network 22050108_pipeline_default
+Network 22050108_pipeline_default not found.
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
