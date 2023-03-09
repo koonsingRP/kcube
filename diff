@@ -1,9 +1,4 @@
-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
-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
-
-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
-
-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
+ghp_OHu7DUj4O5yoEJUhMBUkPjp1Oco6Kn0VlXot
 sudo docker run -d -it -h "puppetclient.localdomain" --add-host puppetmaster:172.17.0.1 --add-host puppet:172.17.0.1 --add-host puppetclient:172.17.0.3 --privileged --name puppetclient puppetclient /sbin/init
 
 # Install nginx package
