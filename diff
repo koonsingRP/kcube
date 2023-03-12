@@ -29,3 +29,20 @@ sudo docker run -d -it -h "puppetclient.localdomain" --add-host puppetmaster:172
   include nginx_hello
   }
 
+
+class apache {
+ package { 'http':
+   ensure => installed,
+ }
+ 
+ file{'/etc/httpd/conf/httpd.conf':
+   source => 'puppet:///modules/apache/httpd.conf',
+   require => Package['httpd'],
+ }
+ 
+ 
+ service { httpd:
+  ensure => running,
+  enable => true,
+  require => File['/etc/httpd/conf/httpd.conf'],
+  }
