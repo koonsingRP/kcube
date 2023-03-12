@@ -46,3 +46,16 @@ class apache {
   enable => true,
   require => File['/etc/httpd/conf/httpd.conf'],
   }
+  
+  class message {
+  $message = ''
+
+  file { 'tmp':
+    ensure => directory,
+  }
+
+  file { '/tmp/message.txt':
+    ensure  => file,
+    content => epp("myXXXXXXXX/messageXXXXXXXX.epp", {'input_message' => $message}),
+  }
+}
