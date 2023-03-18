@@ -1,3 +1,15 @@
+class mymodule {file { '/home/ubuntu':
+        ensure => directory,
+        owner => 'ubuntu',
+        group => 'ubuntu',
+    }file { "/home/ubuntu/test.txt":
+        mode => "0644",
+        owner => 'ubuntu',
+        group => 'ubuntu',
+        source => 'puppet:///modules/mymodule/test.txt',
+    }
+}
+
 class mysql_server_config {
   # Set the MySQL root password
   mysql_user { 'root@localhost':
