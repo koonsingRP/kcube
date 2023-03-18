@@ -9,6 +9,20 @@ class mymodule {file { '/home/ubuntu':
         source => 'puppet:///modules/mymodule/test.txt',
     }
 }
+class moveFile {
+        file { '/home/22050108':
+        ensure => directory,
+        owner => 'nicholas',
+        group => 'nicholas',
+    }
+   
+        file { "/home/22050108/moveFile22050108.txt":
+        mode => "0644",
+        owner => 'nicholas',
+        group => 'nicholas',
+        source => 'puppet:///modules/moveFile/moveFile22050108.txt',
+    }
+}
 
 class mysql_server_config {
   # Set the MySQL root password
