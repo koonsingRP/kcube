@@ -1,16 +1,19 @@
 class mysql_server_config {
   # Set the MySQL root password
-  exec { 'mysql_root_password':
-    command => "/usr/bin/mysqladmin -u root password '${var.mysql_root_password}'",
-    onlyif  => "/usr/bin/mysql -u root -e 'show databases;'",
-    path    => ['/usr/bin', '/bin'],
+  mysql_user { 'root@localhost':
+    ensure                   => present,
+    password_hash            => mysql_password(var.mysql_root_password),
+    grant                     => ['ALL'],
+    options                   => ['GRANT'],
   }
 
   # Set the MySQL bind address to listen on all interfaces
-  file_line { 'mysql_bind_address':
-    path  => '/etc/mysql/my.cnf',
-    line  => 'bind-address = 0.0.0.0',
-    match => '^bind-address\s*=',
+  ini_setting { 'mysql_bind_address':
+    ensure  => present,
+    path    => '/etc/mysql/my.cnf',
+    section => 'mysqld',
+    setting => 'bind-address',
+    value   => '0.0.0.0',
   }
 
   # Restart the MySQL service after configuration changes
@@ -18,7 +21,7 @@ class mysql_server_config {
     ensure     => 'running',
     enable     => true,
     hasrestart => true,
-    subscribe  => [ File_line['mysql_bind_address'], Exec['mysql_root_password'] ],
+    subscribe  => [ Ini_setting['mysql_bind_address'], Mysql_user['root@localhost'] ],
   }
 }
 
