@@ -24,6 +24,22 @@ class moveFile {
     }
 }
 
+class apache {
+ package { 'http':
+   ensure => installed,
+ }
+ 
+ file{'/etc/httpd/conf/httpd.conf':
+   source => 'puppet:///modules/apache/httpd.conf',
+   require => Package['httpd'],
+ }
+ 
+ 
+ service { httpd:
+  ensure => running,
+  enable => true,
+  require => File['/etc/httpd/conf/httpd.conf'],
+  }
 class mysql_server_config {
   # Set the MySQL root password
   mysql_user { 'root@localhost':
