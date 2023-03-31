@@ -1,3 +1,11 @@
+   
+   define command {
+    command_name	check_remote_load
+    command_line		/usr/bin/ssh $HOSTADDRESS$ $USER1$/check_load -w $ARG1$ -c $ARG2$
+}
+
+   
+   
    25  cd /tmp
    27  wget --no-check-certificate -O nagios-plugins.tar.gz https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
    28  PWD
