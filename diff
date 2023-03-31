@@ -6,42 +6,37 @@
 
    
    
-   25  cd /tmp
-   27  wget --no-check-certificate -O nagios-plugins.tar.gz https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
-   28  PWD
-   29  pwd
-   30  ls -lrt
-   31  tar zxf nagios-plugins.tar.gz 
-   32  ls -lrt
-   33  cd nagios-plugins
-   34  cd nagios-plugins-2.3.3/
-   35  sudo ./configure
-   36  ls
-   37  cd ./config
-   38  ls -lrt
-   39  ./config
-   40  pwd
-   41  ./tools/setup
-   42  ls -lrt
-   43  cd tools
-   44  ls
-   45  cd ..
-   46  pwd
-   47  ls -lrt
-   48  ./configure
-   49  apt update
-   50  ./configure
-   51  apt-get install -y autoconf gcc libc6 make wget unzip libgd-dev
-   52  ./configure
-   53  make
-   54  make install
-   55  cd /usr/local/
-   56  cd nagios/
-   57  ls
-   58  cd libexec/
-   59  ls
-   60  ls -lrt
-   61  history
+ cd /tmp
+ wget --no-check-certificate -O nagios-plugins.tar.gz https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+
+ls -lrt
+tar zxf nagios-plugins.tar.gz 
+ls -lrt
+cd nagios-plugins
+cd nagios-plugins-2.3.3/
+sudo ./configure
+ls
+cd ./config
+ls -lrt
+./config
+pwd
+./tools/setup
+ls -lrt
+cd tools
+ls
+cd ..
+pwd
+ls -lrt
+apt update
+apt-get install -y autoconf gcc libc6 make wget unzip libgd-dev
+./configure
+make
+make install
+cd /usr/local/
+cd nagios/
+ls
+cd libexec/
+
 
 
 
