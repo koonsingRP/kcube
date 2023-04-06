@@ -1,0 +1,113 @@
+Started by an SCM change
+Obtained 22050108_jenkinsfile from git https://github.com/koonsingRP/22050108_repo.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/22050108-opr
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/22050108-opr/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/koonsingRP/22050108_repo.git # timeout=10
+Fetching upstream changes from https://github.com/koonsingRP/22050108_repo.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.17.1'
+ > git fetch --tags --progress -- https://github.com/koonsingRP/22050108_repo.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 56ba05850b6d3fb3ab2f74704ba66e08c748c5fe (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 56ba05850b6d3fb3ab2f74704ba66e08c748c5fe # timeout=10
+Commit message: "Update 22050108_jenkinsfile"
+ > git rev-list --no-walk ade4ca7dfc5c3ed5ba202cd79423e9e5dd1b1544 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (22050108 STG1)
+[Pipeline] input
+22050108 STG1: Push change to production web server?
+Proceed or Abort
+Approved by jadmin
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (22050108 STG2)
+[Pipeline] sh
+/var/lib/jenkins/workspace/22050108-opr
+Started on 22050108-websvr...
+Finished on 22050108-websvr:
+  package { 'git':
+    ensure   => '1:2.17.1-1ubuntu0.17',
+    provider => 'apt',
+  }
+  package { 'apache2':
+    ensure   => '2.4.29-1ubuntu4.27',
+    provider => 'apt',
+  }
+  service { 'apache2':
+    ensure   => 'running',
+    provider => 'systemd',
+  }
+  [mNotice: /File[/tmp/22050108/clone]/ensure: removed[0m
+  file { '/tmp/22050108/clone':
+    ensure   => 'absent',
+    provider => 'posix',
+  }
+  file { '/tmp/22050108':
+    ensure   => 'directory',
+    provider => 'posix',
+  }
+  [mNotice: /File[/tmp/22050108/clone]/ensure: created[0m
+  file { '/tmp/22050108/clone':
+    ensure   => 'directory',
+    provider => 'posix',
+  }
+  Cloning into '22050108_repo'...
+Successful on 1 target: 22050108-websvr
+Ran on 1 target in 13.9 sec
+[Pipeline] echo
+22050108 STG2 - Push to production web server completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (22050108 STG3)
+[Pipeline] input
+22050108 STG3: Proceed to test production web service?
+Proceed or Abort
+Approved by jadmin
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (22050108  STG4) (22050108  STG4)
+[Pipeline] sh
++ curl -Is http://22050108-websvr.localdomain
++ head -n 1
++ echo 22050108  STG4: Production web server testing completed
+22050108  STG4: Production web server testing completed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (22050108 STG5)
+[Pipeline] input
+22050108 STG5: Web server testing result has been inspected?
+Proceed or Abort
+Approved by jadmin
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (22050108 STG6)
+[Pipeline] echo
+22050108 STG6: Production Operation is successful.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
